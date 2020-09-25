@@ -1,24 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
+  const [formInput, updateFormInput] = useState({
+    searchType: "",
+    searchTerms: ""
+  })
+
+  const handleChange = event => {
+    updateFormInput({...formInput, ...{[event.target.id]: event.target.value}})
+  }
+
+  const handleSubmit = async(event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.get('')
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <form onSubmit={handleSubmit}>
+      <input
+        type={'datalist'}
+        value={formInput.searchType}
+        id={"searchType"}
+        onChange={handleChange}
+        />
+        <datalist id={'searchType'}>
+          <option value={"Artist"}/>
+          <option value={"Song Name"}/>
+          <option value={"Album"}/>
+          <option value={"Playlist"}/>
+        </datalist>
+      <input type={'submit'} value={"Search"}/>
+    </form>
     </div>
   );
 }
