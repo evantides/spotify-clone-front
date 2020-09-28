@@ -12,16 +12,16 @@ function App() {
     updateFormInput({...formInput, ...{[event.target.id]: event.target.value}})
   }
 
-  // const handleSelect = event => {
-  //   updateFormInput({...formInput, ...{[event.target.id]: }})
-  // }
+  const handleSelect = event => {
+    updateFormInput({...formInput, ...{[event.target.id]: event.target.value}})
+  }
 
   const handleSubmit = async(event) => {
     event.preventDefault();
     const terms = formInput.searchTerms.replace(' ', '%20')
     try {
       const response = await axios.get(`http://localhost:8888/search/${formInput.searchType}/${terms}`)
-      console.log(response)
+      console.log(response.data)
     } catch (err) {
       console.error(err)
     }
@@ -31,21 +31,17 @@ function App() {
     <div className="App">
     <form onSubmit={handleSubmit}>
       <input
-        list={'searchType'}
-        // onChange={handleChange}
-        />
-      <input
           type={'text'}
           value={formInput.searchTerms}
           id={"searchTerms"}
           onChange={handleChange}
       />
-        <datalist id={'searchType'}>
-          <option value={"Artist"}/>
-          <option value={"Song Name"}/>
-          <option value={"Album"}/>
-          <option value={"Playlist"}/>
-        </datalist>
+        <select id={'searchType'} name={"Select A Search Type"} onChange={handleChange}>
+          <option value={"artist"}>Artist</option>
+          <option value={"track"}>Track</option>
+          <option value={"album"}>Album</option>
+          <option value={"playlist"}>Playlist</option>
+        </select>
       <input type={'submit'} value={"Search"}/>
     </form>
     </div>
