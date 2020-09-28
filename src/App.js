@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import './App.css';
 
 function App() {
@@ -11,10 +12,18 @@ function App() {
     updateFormInput({...formInput, ...{[event.target.id]: event.target.value}})
   }
 
+  // const handleSelect = event => {
+  //   updateFormInput({...formInput, ...{[event.target.id]: }})
+  // }
+
   const handleSubmit = async(event) => {
     event.preventDefault();
+    const terms = formInput.searchTerms.replace(' ', '%20')
     try {
-      const response = await axios.get('')
+      const response = await axios.get(`http://localhost:8888/search/${formInput.searchType}/${terms}`)
+      console.log(response)
+    } catch (err) {
+      console.error(err)
     }
   }
 
@@ -22,11 +31,15 @@ function App() {
     <div className="App">
     <form onSubmit={handleSubmit}>
       <input
-        type={'datalist'}
-        value={formInput.searchType}
-        id={"searchType"}
-        onChange={handleChange}
+        list={'searchType'}
+        // onChange={handleChange}
         />
+      <input
+          type={'text'}
+          value={formInput.searchTerms}
+          id={"searchTerms"}
+          onChange={handleChange}
+      />
         <datalist id={'searchType'}>
           <option value={"Artist"}/>
           <option value={"Song Name"}/>
