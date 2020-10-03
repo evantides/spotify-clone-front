@@ -2,12 +2,18 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import './App.css';
 import NavBar from "./components/Nav";
+import ArtistItem from "./components/ArtistItem"
+import AlbumItem from "./components/AlbumItem"
+import PlaylistItem from "./components/PlaylistItem";
+import TrackItem from "./components/TrackItem";
 
 function App() {
   const [formInput, updateFormInput] = useState({
     searchType: "artist",
     searchTerms: ""
   })
+
+  const [searchType, updateSearchType] = useState();
 
   const [results, updateResults] = useState([])
 
@@ -39,7 +45,8 @@ function App() {
     try {
       const response = await axios.get(`http://localhost:8888/search/${formInput.searchType}/${terms}`)
       const data = await response.data;
-      updateResults([...results, ...data])
+      updateResults([...data]);
+      updateSearchType(formInput.searchType);
     } catch (err) {
       console.error(err)
     }
@@ -65,15 +72,10 @@ function App() {
         <input type={'submit'} value={"Search"}/>
       </form>
         <main>
-          {console.log(results)}
-        {results?.map(specific => {
-          return (
-              <div key={specific.uri}>
-                <h1>Artist</h1>
-                <div>{specific.artistName}</div>
-              </div>
-          )
-        })}
+          {searchType === "artist" ? <ArtistItem results={results}/> : ""}
+          {searchType === "track" ? <TrackItem results={results}/> : ""}
+          {searchType === "album" ? <AlbumItem results={results}/> : ""}
+          {searchType === "playlist" ? <PlaylistItem results={results}/> : ""}
         </main>
 
     </div>
