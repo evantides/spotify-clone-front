@@ -47,6 +47,9 @@ function App() {
       const data = await response.data;
       updateResults([...data]);
       updateSearchType(formInput.searchType);
+      updateFormInput({
+        searchTerms: ""
+      })
     } catch (err) {
       console.error(err)
     }
